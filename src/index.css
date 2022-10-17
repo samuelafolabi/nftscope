@@ -1,13 +1,29 @@
-body {
+:root {
+  font-size: 62.5%;
+}
+
+*,
+*::before,
+*::after {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+span {
+  color: #ae5050;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: "Bebas Neue", cursive;
+  background-color: #f0fff3;
+  padding: 1rem 2rem 0 2rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
