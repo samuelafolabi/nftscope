@@ -8,7 +8,6 @@ function NftList() {
   //setting initial state of nft
   const [myNfts, setMyNfts] = useState([]);
   const [search, setSearch] = useState("");
-  const [floorDetails, setFloorDetails] = useState("");
   // setting address as the account
   const { address } = useAccount();
   // setting api key for fetching
@@ -21,6 +20,7 @@ function NftList() {
   const fetchnftList = async () => {
     await alchemy.nft.getNftsForOwner(`${address}`).then(setMyNfts);
   };
+
   // fetching with use effect
   useEffect(() => {
     fetchnftList();
@@ -36,16 +36,6 @@ function NftList() {
         nft.contract?.address.toLowerCase().includes(search)
     );
   };
-  // .then(
-  //   window.open(
-  //     `${floorDetails?.openSea?.collectionUrl}`,
-  //     "_blank"
-  //   )
-  // )
-
-  // const findPrice = () => {
-  //   alchemy.nft.getFloorPrice(`${item?.contract?.name}`).then(console.log);
-  // };
 
   return (
     <div>
@@ -59,12 +49,17 @@ function NftList() {
           You've got {myNfts?.totalCount}NFT{myNfts?.totalCount > 1 ? "s" : ""}{" "}
           in your wallet
         </Box>
-        <input
+        <Input
           onChange={(e) => setSearch(e.target.value.toLocaleLowerCase())}
           placeholder="search with name or ca"
+          width={{
+            base: "90%",
+            md: "60%",
+            lg: "80%",
+          }}
           style={{
             background: "white",
-            width: "40%",
+            // width: "40%",
             height: "3rem",
             fontFamily: "inherit",
             fontSize: "1.5rem",
@@ -90,15 +85,17 @@ function NftList() {
                 marginBottom="10rem"
                 marginTop="4rem"
                 direction={{ base: "column", md: "row" }}
+                key={item?.tokenId}
               >
                 {/* image box --start */}
 
-                <img
+                <Img
                   src={item?.media[0]?.thumbnail}
+                  width={{ base: "90vw", md: "32rem" }}
                   style={{
                     objectFit: "cover",
                     // height: "36rem",
-                    width: "32rem",
+                    // width: "32rem",
                   }}
                   alt={item?.contract?.name}
                 />
@@ -113,38 +110,8 @@ function NftList() {
                     sx={{
                       marginBottom: "2.5rem",
                     }}
-                    // onClick={() =>
-                    //   alchemy.nft
-                    //     .getFloorPrice(`${item?.contract?.address}`)
-                    //     .then(setFloorDetails)
-                    //     .then(console.log("floor details", floorDetails))
-
-                    //     .then(
-                    //       window.open(
-                    //         `${floorDetails?.openSea?.collectionUrl}`,
-                    //         "_blank"
-                    //       )
-                    //     )
-                    // }
-
-                    // onClick={() =>
-                    //   handleSearch().map((item) => {
-                    //     return alchemy.nft
-                    //       .getFloorPrice(`${item?.contract?.address}`)
-                    //       .then(setFloorDetails)
-                    //       .then(console.log("floor details", floorDetails))
-
-                    //       .then(
-                    //         window.open(
-                    //           `${floorDetails?.openSea?.collectionUrl}`,
-                    //           "_blank"
-                    //         )
-                    //       );
-                    //   })
-                    // }
                   >
                     {item?.contract?.name} #{item?.tokenId}{" "}
-                    {floorDetails?.openSea?.floorPrice}
                   </Text>
                   <Text
                     sx={{
@@ -170,10 +137,20 @@ function NftList() {
                     sx={{
                       marginBottom: "1rem",
                     }}
+                    onClick={() => {
+                      alchemy.nft
+                        .getFloorPrice(`${item?.contract?.address}`)
+                        .then((myFloorDetails) => {
+                          const details = myFloorDetails;
+                          console.log(details);
+                          window.open(
+                            `${details.openSea.collectionUrl}`,
+                            "_blank"
+                          );
+                        });
+                    }}
                   >
-                    <a>
-                      <span>see full collection</span>
-                    </a>
+                    <span>see full collection</span>
                   </Box>
 
                   <Text>{item?.media[0]?.bytes / 1000} KB</Text>
@@ -181,6 +158,9 @@ function NftList() {
                     sx={{
                       marginBottom: "1rem",
                     }}
+                    onClick={() =>
+                      window.open(`${item?.media[0]?.gateway}`, "_blank")
+                    }
                   >
                     <a>
                       <span>download raw file</span>

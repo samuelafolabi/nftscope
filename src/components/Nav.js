@@ -8,7 +8,7 @@ function Nav() {
 
   return (
     <>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" alignItems="center">
         <Box>
           nft<span>scope</span>
         </Box>

@@ -14,7 +14,7 @@ function Home() {
     <Box>
       <Flex height="80vh" justifyContent="center" alignItems="center">
         <VStack>
-          <Text fontSize="12vw">
+          <Text fontSize={{ base: "18vw", md: "12vw" }} textAlign="center">
             See the <span> nfts </span> you've got
           </Text>
           <ConnectKitButton />
