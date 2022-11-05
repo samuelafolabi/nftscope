@@ -1,6 +1,7 @@
 {
   "name": "nftscope",
   "version": "0.1.0",
+  "homepage": "https://samuelafolabi.github.io/nftscope",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.3.5",
