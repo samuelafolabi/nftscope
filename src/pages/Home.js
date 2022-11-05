@@ -1,8 +1,9 @@
-import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import React from "react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import { ConnectKitButton } from "connectkit";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Home() {
   const { isConnected, isConnecting } = useAccount();

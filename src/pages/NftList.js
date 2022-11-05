@@ -3,16 +3,17 @@ import { Box, Flex, Text, VStack, Input, Img } from "@chakra-ui/react";
 
 import { Network, Alchemy } from "alchemy-sdk";
 import { useAccount } from "wagmi";
+import { ConnectKitButton } from "connectkit";
 
 function NftList() {
   //setting initial state of nft
   const [myNfts, setMyNfts] = useState([]);
   const [search, setSearch] = useState("");
   // setting address as the account
-  const { address } = useAccount();
+  const { address, isDisconnected, isConnected, isConnecting } = useAccount();
   // setting api key for fetching
   const settings = {
-    apiKey: "GbHOpS4z2fCeERYz6nij9wERLRD86UNa",
+    apiKey: "6sIDTgwfsNMF3NtK5W3h8J52KQfX90ld",
     network: Network.ETH_MAINNET,
   };
   const alchemy = new Alchemy(settings);
@@ -36,7 +37,36 @@ function NftList() {
         nft.contract?.address.toLowerCase().includes(search)
     );
   };
-
+  if (isDisconnected) {
+    return (
+      <VStack marginTop="1rem">
+        <Box
+          sx={{
+            marginTop: "1rem",
+            marginBottom: "2rem",
+          }}
+        >
+          hey fren. It seems your wallet is disconnected🥴!
+        </Box>
+        <ConnectKitButton />
+      </VStack>
+    );
+  }
+  if (isConnecting) {
+    return (
+      <VStack marginTop="1rem">
+        <Box
+          sx={{
+            marginTop: "1rem",
+            marginBottom: "2rem",
+          }}
+        >
+          Okies... I am trying to connect now🙂!
+        </Box>
+        <ConnectKitButton />
+      </VStack>
+    );
+  }
   return (
     <div>
       <VStack>
@@ -46,8 +76,21 @@ function NftList() {
             marginBottom: "2rem",
           }}
         >
-          You've got {myNfts?.totalCount}NFT{myNfts?.totalCount > 1 ? "s" : ""}{" "}
-          in your wallet
+          {!newNftList ? (
+            "🙂"
+          ) : (
+            <>
+              {myNfts?.totalCount < 1 ? (
+                <>You seem to have no nft on this chain🤔. ngmi😒.</>
+              ) : (
+                <>
+                  You've got {myNfts?.totalCount}NFT
+                  {myNfts?.totalCount > 1 ? "s" : ""} in your eth mainnet
+                  chain😍. You mind sharing some with me?😋
+                </>
+              )}
+            </>
+          )}
         </Box>
         <Input
           onChange={(e) => setSearch(e.target.value.toLocaleLowerCase())}
@@ -56,6 +99,7 @@ function NftList() {
             base: "90%",
             md: "60%",
             lg: "80%",
+            "2xl": "50%",
           }}
           style={{
             background: "white",
@@ -81,6 +125,7 @@ function NftList() {
 
             return (
               <Flex
+                justifyContent={{ md: "center", lg: "center", "2xl": "center" }}
                 gap="5rem"
                 marginBottom="10rem"
                 marginTop="4rem"
@@ -94,8 +139,7 @@ function NftList() {
                   width={{ base: "90vw", md: "32rem" }}
                   style={{
                     objectFit: "cover",
-                    // height: "36rem",
-                    // width: "32rem",
+                    borderRadius: "5px",
                   }}
                   alt={item?.contract?.name}
                 />
@@ -103,7 +147,11 @@ function NftList() {
                 {/* image box --end */}
 
                 {/* content box --start */}
-                <Box>
+                <Box
+                  width={{
+                    lg: "50rem",
+                  }}
+                >
                   <Text
                     fontSize="3rem"
                     letterSpacing="0.1em"
@@ -136,6 +184,7 @@ function NftList() {
                   <Box
                     sx={{
                       marginBottom: "1rem",
+                      cursor: "pointer",
                     }}
                     onClick={() => {
                       alchemy.nft
@@ -157,6 +206,7 @@ function NftList() {
                   <Box
                     sx={{
                       marginBottom: "1rem",
+                      cursor: "pointer",
                     }}
                     onClick={() =>
                       window.open(`${item?.media[0]?.gateway}`, "_blank")
