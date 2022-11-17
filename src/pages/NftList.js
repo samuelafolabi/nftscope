@@ -26,8 +26,6 @@ function NftList() {
   useEffect(() => {
     fetchnftList();
   }, []);
-
-  console.log("mynfts", myNfts);
   const newNftList = myNfts?.ownedNfts;
   //making search
   const handleSearch = () => {
@@ -191,7 +189,7 @@ function NftList() {
                         .getFloorPrice(`${item?.contract?.address}`)
                         .then((myFloorDetails) => {
                           const details = myFloorDetails;
-                          console.log(details);
+
                           window.open(
                             `${details.openSea.collectionUrl}`,
                             "_blank"
